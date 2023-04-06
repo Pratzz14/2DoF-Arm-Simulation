@@ -28,7 +28,7 @@ def inverse_k2dof(x,y,l1,l2):
     try:
         temp = math.acos(upper/lower) # breaks if not possible TT, guess its a feature now
     except:
-        return (0,0,0)
+        return (False,0,0)
     
     q2 = math.degrees(temp)
     
@@ -45,7 +45,7 @@ def inverse_k2dof(x,y,l1,l2):
     b= math.atan(c)
     q1 = math.degrees(a-b)
     
-    return 1,int(q1),int(q2)
+    return True,int(q1),int(q2)
 
 def test_answer():
     assert inverse_k2dof(275, 900, 800, 500) == (1, 40,90)
