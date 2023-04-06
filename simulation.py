@@ -1,13 +1,43 @@
+'''
+2 DoF robotic arm 2D simulation
+Imagining a SCARA ARM moving in 2D
+
+Author: Pratik Mahankal - pratik.mahankal14@gmail.com
+
+-- Opens up a OpenCV window 
+-- Left mouse click to assign the goal end point
+
+'''
+
 import cv2
 import numpy as np
+from inverse_k import inverse_k2dof as ik
+import math
+
+arm1_len = 300
+arm2_len = 200
 
 window_width = 640
 window_height = 480
+img = np.zeros((window_height,window_width,3), dtype=np.uint8)
+
+def graphics(click_x,click_y):
+    
+    global img
+    img = np.zeros((window_height,window_width,3), dtype=np.uint8)
+    img = cv2.circle(img, (int(click_x) ,int(click_y)), 10, (0, 0, 255), -1)
+    img = cv2.line(img, (window_width//2,0), (window_width//2,window_height), (0, 0, 255), 1)
+    img = cv2.rectangle(img, ((window_width//2)-50,window_height-50), ((window_width//2)+50,window_height+50), (0, 0, 255), -1)
+
+    cv2.imshow("simulation",img)
 
 def click_event(event, x, y, flags, params):
 
     # Mouse event: ON LEFT CLICK
     if event == cv2.EVENT_LBUTTONDOWN:
+
+        click_x = x
+        click_y = y
         
         # handling x-cord
         if (x == window_width//2):x = 0
@@ -18,6 +48,10 @@ def click_event(event, x, y, flags, params):
         y = window_height - y
         print(x, y, " -- ",end=" ")
         print(x,y)
+
+        graphics(click_x,click_y)
+
+        
 
 # Generating a black canvas with background
 img = np.zeros((window_height,window_width,3), dtype=np.uint8)
